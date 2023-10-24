@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Uk.Eticaret.Web.Mvc.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,7 +8,6 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -21,13 +23,10 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapControllerRoute(
     name: "category",
     pattern: "category/{slug}",
     defaults: new { controller = "Category", action = "Index" });
-
+ 
 app.MapControllerRoute(
     name: "product",
     pattern: "product/{slug}",
@@ -38,6 +37,12 @@ app.MapControllerRoute(
     pattern: "page/{slug}",
     defaults: new { controller = "Page", action = "Detail" });
 
+app.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
