@@ -16,6 +16,7 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
         }
         
 
+
         public IActionResult Detail(int id)
         {
             return View();
