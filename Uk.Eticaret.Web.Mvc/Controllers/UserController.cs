@@ -8,7 +8,9 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
         {
             return View();
         }
-        public IActionResult Adresses()
+
+        public IActionResult Addresses()
+
         {
             return View();
         }
