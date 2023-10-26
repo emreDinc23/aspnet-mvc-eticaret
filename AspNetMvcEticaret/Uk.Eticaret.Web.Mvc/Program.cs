@@ -23,6 +23,10 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
     name: "category",
     pattern: "category/{slug}",
     defaults: new { controller = "Category", action = "Index" });
@@ -36,10 +40,6 @@ app.MapControllerRoute(
     name: "page",
     pattern: "page/{slug}",
     defaults: new { controller = "Page", action = "Detail" });
-
-app.MapControllerRoute(
-      name: "areas",
-      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
