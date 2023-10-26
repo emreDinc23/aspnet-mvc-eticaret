@@ -8,10 +8,12 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
         {
             return View();
         }
+
         public IActionResult Search(string query, int page)
         {
             return View();
         }
+
         public IActionResult Detail(int id)
         {
             return View();
