@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Uk.Eticaret.Web.Mvc.Models;
 
 var builder = WebApplication.CreateBuilder(args);
