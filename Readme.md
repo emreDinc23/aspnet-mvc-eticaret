@@ -1,12 +1,12 @@
-# ASP.NET MVC Eticaret Projesi
+ï»¿# ASP.NET MVC Eticaret Projesi
 
-![Açýklama](cover.png)
+![AÃ§Ä±klama](cover.png)
 
-## Özellikler
+## Ã–zellikler
 - Katalog
 - Sepet
-- Ödeme
+- Ã–deme
 
-## Çalýþtýrma
+## Ã‡alÄ±ÅŸtÄ±rma
 
 `dotnet run`
