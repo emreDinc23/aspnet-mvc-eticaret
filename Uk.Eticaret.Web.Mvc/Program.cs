@@ -1,11 +1,23 @@
-using Uk.Eticaret.Web.Mvc.Models;
+using Microsoft.EntityFrameworkCore;
+using Uk.Eticaret.EntityFramework;
+using Uk.Eticaret.EntityFramework.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("Default");
+    options.UseSqlServer(connectionString);
+});
+
 var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+dbContext.Database.EnsureDeleted();
+dbContext.Database.EnsureCreated();
+DbSeeder.SeedAll(dbContext);
 
 if (!app.Environment.IsDevelopment())
 {
@@ -22,10 +34,14 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
     name: "category",
     pattern: "category/{slug}",
     defaults: new { controller = "Category", action = "Index" });
- 
+
 app.MapControllerRoute(
     name: "product",
     pattern: "product/{slug}",
@@ -35,10 +51,6 @@ app.MapControllerRoute(
     name: "page",
     pattern: "page/{slug}",
     defaults: new { controller = "Page", action = "Detail" });
-
-app.MapControllerRoute(
-      name: "areas",
-      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
