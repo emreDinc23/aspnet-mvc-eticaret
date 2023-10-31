@@ -28,5 +28,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Uk.Eticaret.EntityFramework\Uk.Eticaret.EntityFramework.csproj" />
+  </ItemGroup>
+
 </Project>
 
