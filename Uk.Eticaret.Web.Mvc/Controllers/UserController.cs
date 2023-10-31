@@ -14,6 +14,7 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
         {
             return View();
         }
+
         public IActionResult Orders()
         {
             return View();

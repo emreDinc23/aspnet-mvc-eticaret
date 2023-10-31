@@ -8,6 +8,7 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
         {
             return View();
         }
+
         public IActionResult Detail(string slug)
         {
             return View();
