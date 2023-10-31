@@ -1,4 +1,4 @@
-﻿namespace Uk.Eticaret.EntityFramework.Entities
+﻿namespace Uk.Eticaret.EntityFramework.Entities.Abstract
 {
     public abstract class BaseEntity
     {

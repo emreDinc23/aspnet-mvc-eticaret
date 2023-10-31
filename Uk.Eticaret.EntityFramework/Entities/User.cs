@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Uk.Eticaret.EntityFramework.Entities;
+using Uk.Eticaret.EntityFramework.Entities.Abstract;
 
-namespace Uk.Eticaret.Web.Mvc.Entity
+namespace Uk.Eticaret.EntityFramework.Entities
 {
     public class User : BaseEntity
     {
