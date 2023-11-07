@@ -33,8 +33,10 @@
         </div>
     </div>
     <!-- /End Preloader -->
+
     <!-- Start Header Area -->
-   <partial name="_HeaderViewComponent" />
+   <vc:header />
+   @* @await Component.InvokeAsync("Header") *@
     <!-- End Header Area -->
 
     @RenderBody()
