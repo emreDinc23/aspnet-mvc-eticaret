@@ -1,4 +1,6 @@
-﻿using Uk.Eticaret.EntityFramework.Entities;
+﻿using Bogus;
+using Microsoft.EntityFrameworkCore;
+using Uk.Eticaret.EntityFramework.Entities;
 
 namespace Uk.Eticaret.EntityFramework.Seeders
 {
@@ -40,26 +42,20 @@ namespace Uk.Eticaret.EntityFramework.Seeders
         {
             if (!context.Products.Any())
             {
-                var products = new List<Product>
-            {
-                new Product {   ProductName = "Buzdolabı",
-                    ProductDescription = "Bu bir örnek ürün açıklamasıdır.",
-                    ProductColor = "Beyaz",
-                    ProductRating = "5 yıldız",
-                    Price = 100,
-                    ProductDate = new DateTime(2023, 10, 30),
-                    Stock = 50,
-                    IsActive = true },
-                new Product {  ProductName = "Bilgisayar",
-                    ProductDescription = "Bu bir başka örnek ürün açıklamasıdır.",
-                    ProductColor = "Siyah",
-                    ProductRating = "4 yıldız",
-                    Price = 75,
-                    ProductDate = new DateTime(2023, 10, 30),
-                    Stock = 30,
-                    IsActive = true },
-                    };
+                int i = 1;
+                var productsTr = new Bogus.DataSets.Commerce(locale: "tr");
+                var productFaker = new Faker<Product>()
+                    .RuleFor(o => o.ProductName, f => productsTr.ProductName())
+                    .RuleFor(o => o.ProductDescription, f => productsTr.ProductDescription())
+                    .RuleFor(o => o.ProductRating, f => f.Random.Decimal(1, 5))
+                    .RuleFor(o => o.ProductColor, f => f.Commerce.Color())
+                    .RuleFor(o => o.Price, f => f.Random.Decimal(10, 100))
+                    .RuleFor(o => o.Stock, f => f.Random.Int(10, 100))
+                    .RuleFor(o => o.ProductDate, new DateTime(2023, 05, 14, 9, 41, 25))
+                    .RuleFor(o => o.IsActive, true)
+                    .RuleFor(o => o.IsVisibleSlider, f => f.Random.Bool());
 
+                var products = productFaker.Generate(5);
                 context.Products.AddRange(products);
                 context.SaveChanges();
             }
