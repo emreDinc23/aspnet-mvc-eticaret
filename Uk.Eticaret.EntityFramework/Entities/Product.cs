@@ -19,7 +19,7 @@ namespace Uk.Eticaret.EntityFramework.Entities
         public string ProductDescription { get; set; }
 
         public string ProductColor { get; set; }
-        public string ProductRating { get; set; }
+        public decimal ProductRating { get; set; }
 
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
@@ -30,6 +30,7 @@ namespace Uk.Eticaret.EntityFramework.Entities
         public int Stock { get; set; }
 
         public bool IsActive { get; set; }
+        public bool IsVisibleSlider { get; set; }
         public DateTime? DeletedAt { get; set; }
 
         public ICollection<ProductComment> Comments { get; set; }
