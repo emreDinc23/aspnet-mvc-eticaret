@@ -1,7 +1,6 @@
 ﻿ <!-- Start Hero Area -->
-<section class="hero-area">
-    <partial name="_HeroViewComponent" />
-</section>
+@await Component.InvokeAsync("Hero")
+
 <!-- End Hero Area -->
 <!-- Start Trending Product Area -->
 <section class="trending-product section" style="margin-top: 12px;">
