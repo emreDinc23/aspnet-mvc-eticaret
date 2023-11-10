@@ -23,7 +23,7 @@ namespace Uk.Eticaret.EntityFramework.Entities
         [StringLength(50, ErrorMessage = "Lütfen en fazla 50 karakter giriniz.")]
         public string Tags { get; set; }
 
-        public bool Status { get; set; }
+        public bool IsActive { get; set; }
 
         public ICollection<CategoryProduct> Products { get; set; }
     }

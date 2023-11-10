@@ -24,13 +24,13 @@ namespace Uk.Eticaret.EntityFramework.Seeders
                         Description = "Bu bir örnek kategori açıklamasıdır.",
                         Image = "kategori1.jpg",
                         Tags = "etiket1, etiket2, etiket3",
-                        Status = true },
+                        IsActive = true },
                     new Category {
                         Name = "Beyaz Eşya",
                         Description = "Bu bir başka örnek kategori açıklamasıdır.",
                         Image = "kategori2.jpg",
                         Tags = "etiket4, etiket5",
-                        Status = true }
+                        IsActive = true }
                 };
 
                 context.Categories.AddRange(categories);
