@@ -195,7 +195,8 @@
                         <ul class="sub-category">
                             @foreach (var category in Model.Categories)
                             {
-                                <li><a href="asp-controller=" Category" asp-action="Index" asp-route-id="@category.Id" ">@category.Name</a></li>
+                                <li><a asp-controller="Category" asp-action="Index" asp-route-id="@category.Id">@category.Name</a></li>
+
                                 }
                             </ul>
                         </div>
