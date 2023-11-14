@@ -13,6 +13,8 @@ namespace Uk.Eticaret.EntityFramework
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<CategoryProduct> CategoryProducts { get; set; }
+
         public DbSet<ProductComment> ProductComments { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Setting> Settings { get; set; }
