@@ -8,16 +8,36 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly AppDbContext _db;
+        private readonly AppDbContext _context;
 
-        public CategoryController(AppDbContext db)
+        public CategoryController(AppDbContext context)
         {
-            _db = db;
+            _context = context;
         }
 
-        public IActionResult Index(string slug, int page)
+        public IActionResult Index(int id, string slug)
         {
-            return View();
+            // parametreden gelen değere karşılık gelen category id elde edildi
+            var category = _context.Categories.SingleOrDefault(c => c.Id == id);
+            // parametreyle uyuşan bir değer yoksa hata dönüldü
+            if (category == null)
+            {
+                return NotFound();
+            }
+            // Category id si parametre değerinden gelen değere uygun olan değerler getirildi
+            var productsInCategory = _context.Products
+                .Where(p => p.Categories.Any(cp => cp.CategoryId == category.Id))
+                .ToList();
+
+            //Product images tablosundan ImageUrl verisi çekilip viewbag ile taşındı
+            ViewBag.ImagesUrl = _context.ProductImages
+                .GroupBy(pi => pi.ProductId)
+                .ToDictionary(
+                group => group.Key,
+                group => group.FirstOrDefault()?.ImageUrl
+      );
+
+            return View(productsInCategory);
         }
     }
 }
