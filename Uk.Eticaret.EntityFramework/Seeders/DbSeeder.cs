@@ -8,56 +8,95 @@ namespace Uk.Eticaret.EntityFramework.Seeders
     {
         public static void SeedAll(AppDbContext context)
         {
-            SeedCategories(context);
-            SeedProducts(context);
+            //SeedProducts(context);
+            SeedCategoriesWithProducts(context);
             SeedUsers(context);
         }
 
-        public static void SeedCategories(AppDbContext context)
+        //public static void SeedProducts(AppDbContext context)
+        //{
+        //    if (!context.Products.Any())
+        //    {
+        //        var productsTr = new Bogus.DataSets.Commerce(locale: "tr");
+        //        var productFaker = new Faker<Product>()
+        //            .RuleFor(p => p.ProductName, f => f.Commerce.ProductName())
+        //            .RuleFor(p => p.ProductDescription, f => f.Lorem.Sentence())
+        //            .RuleFor(p => p.ProductColor, f => f.Commerce.Color())
+        //            .RuleFor(p => p.ProductRating, f => f.Random.Decimal(1, 5))
+        //            .RuleFor(p => p.Price, f => f.Random.Decimal(10, 1000))
+        //            .RuleFor(p => p.ProductDate, f => f.Date.Recent())
+        //            .RuleFor(p => p.Stock, f => f.Random.Int(0, 100))
+        //            .RuleFor(p => p.IsActive, f => f.Random.Bool())
+        //            .RuleFor(p => p.IsVisibleSlider, f => f.Random.Bool());
+
+        //        var products = productFaker.Generate(20);
+
+        //        context.Products.AddRange(products);
+        //        context.SaveChanges();
+
+        //        if (!context.ProductImages.Any())
+        //        {
+        //            var imageFaker = new Faker<ProductImage>()
+        //                .RuleFor(pi => pi.ImageUrl, f => f.Image.PicsumUrl())
+        //                .RuleFor(pi => pi.ProductId, f => f.PickRandom(products).Id);
+
+        //            var images = imageFaker.Generate(40);
+
+        //            context.ProductImages.AddRange(images);
+        //            context.SaveChanges();
+        //        }
+        //    }
+        //}
+
+        public static void SeedCategoriesWithProducts(AppDbContext context)
         {
             if (!context.Categories.Any())
             {
-                var categories = new List<Category>
+                var categoryFaker = new Faker<Category>()
+                    .RuleFor(c => c.Name, f => f.Commerce.Categories(1)[0])
+                    .RuleFor(c => c.Description, f => f.Lorem.Sentence())
+                    .RuleFor(c => c.Image, f => f.Image.PicsumUrl())
+                    .RuleFor(c => c.Tags, f => f.Commerce.Categories(1)[0])
+                    .RuleFor(c => c.IsActive, f => f.Random.Bool());
+
+                var categories = categoryFaker.Generate(10);
+
+                foreach (var category in categories)
                 {
-                    new Category {
-                        Name = "Elektronik",
-                        Description = "Bu bir örnek kategori açıklamasıdır.",
-                        Image = "kategori1.jpg",
-                        Tags = "etiket1, etiket2, etiket3",
-                        IsActive = true },
-                    new Category {
-                        Name = "Beyaz Eşya",
-                        Description = "Bu bir başka örnek kategori açıklamasıdır.",
-                        Image = "kategori2.jpg",
-                        Tags = "etiket4, etiket5",
-                        IsActive = true }
-                };
+                    context.Categories.Add(category);
+                    context.SaveChanges();
 
-                context.Categories.AddRange(categories);
-                context.SaveChanges();
-            }
-        }
+                    var productFaker = new Faker<Product>()
+                        .RuleFor(p => p.ProductName, f => f.Commerce.ProductName())
+                        .RuleFor(p => p.ProductDescription, f => f.Lorem.Sentence())
+                        .RuleFor(p => p.ProductColor, f => f.Commerce.Color())
+                        .RuleFor(p => p.ProductRating, f => f.Random.Decimal(1, 5))
+                        .RuleFor(p => p.Price, f => f.Random.Decimal(10, 1000))
+                        .RuleFor(p => p.ProductDate, f => f.Date.Recent())
+                        .RuleFor(p => p.Stock, f => f.Random.Int(0, 100))
+                        .RuleFor(p => p.IsActive, f => f.Random.Bool())
+                        .RuleFor(p => p.IsVisibleSlider, f => f.Random.Bool());
 
-        public static void SeedProducts(AppDbContext context)
-        {
-            if (!context.Products.Any())
-            {
-                int i = 1;
-                var productsTr = new Bogus.DataSets.Commerce(locale: "tr");
-                var productFaker = new Faker<Product>()
-                    .RuleFor(o => o.ProductName, f => productsTr.ProductName())
-                    .RuleFor(o => o.ProductDescription, f => productsTr.ProductDescription())
-                    .RuleFor(o => o.ProductRating, f => f.Random.Decimal(1, 5))
-                    .RuleFor(o => o.ProductColor, f => f.Commerce.Color())
-                    .RuleFor(o => o.Price, f => f.Random.Decimal(10, 100))
-                    .RuleFor(o => o.Stock, f => f.Random.Int(10, 100))
-                    .RuleFor(o => o.ProductDate, new DateTime(2023, 05, 14, 9, 41, 25))
-                    .RuleFor(o => o.IsActive, true)
-                    .RuleFor(o => o.IsVisibleSlider, f => f.Random.Bool());
+                    var products = productFaker.Generate(5);
 
-                var products = productFaker.Generate(5);
-                context.Products.AddRange(products);
-                context.SaveChanges();
+                    foreach (var product in products)
+                    {
+                        context.Products.Add(product);
+                        context.SaveChanges();
+
+                        var imageFaker = new Faker<ProductImage>()
+                            .RuleFor(pi => pi.ImageUrl, f => f.Image.PicsumUrl())
+                            .RuleFor(pi => pi.ProductId, f => product.Id);
+
+                        var images = imageFaker.Generate(1);
+
+                        context.ProductImages.AddRange(images);
+                        context.SaveChanges();
+
+                        context.CategoryProducts.Add(new CategoryProduct { CategoryId = category.Id, ProductId = product.Id });
+                        context.SaveChanges();
+                    }
+                }
             }
         }
 
