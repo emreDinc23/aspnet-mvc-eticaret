@@ -1,4 +1,5 @@
 ﻿@model HeaderViewModel
+
 <header class="header navbar-area">
     <!-- Start Topbar -->
     <div class="topbar">
@@ -38,9 +39,9 @@
                 <div class="col-lg-4 col-md-4 col-12">
                     <div class="top-middle">
                         <ul class="useful-links">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="about-us.html">About Us</a></li>
-                            <li><a href="contact.html">Contact Us</a></li>
+                            <li><a asp-controller="Home" asp-action="Index" aspf>Home</a></li>
+                            <li><a asp-controller="Page" asp-action="Detail">About Us</a></li>
+                            <li><a asp-controller="Page" asp-action="Index">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>
@@ -52,10 +53,10 @@
                         </div>
                         <ul class="user-login">
                             <li>
-                                <a href="login.html">Sign In</a>
+                                <a asp-controller="Auth" asp-action="Login">Sign In</a>
                             </li>
                             <li>
-                                <a href="register.html">Register</a>
+                                <a asp-controller="Auth" asp-action="Register">Register</a>
                             </li>
                         </ul>
                     </div>
@@ -76,12 +77,14 @@
                     <!-- End Header Logo -->
                 </div>
                 <div class="col-lg-5 col-md-7 d-xs-none">
+                    <!-- Start Main Menu Search -->
                     <div class="main-menu-search">
-                        <form method="get" action="/Product/Search" id="searchForm">
+                        <!-- navbar search start -->
+                        <form asp-controller="Product" asp-action="Search" method="get">
                             <div class="navbar-search search-style-5">
                                 <div class="search-select">
                                     <div class="select-position">
-                                        <select name="categoryId" id="select1" asp-items="Model.CategoriesDd">
+                                        <select id="select1" asp-items="Model.CategoriesDd" name="categoryId">
                                             <option selected>All</option>
                                         </select>
                                     </div>
@@ -94,7 +97,9 @@
                                 </div>
                             </div>
                         </form>
+                        <!-- navbar search Ends -->
                     </div>
+                    <!-- End Main Menu Search -->
                 </div>
                 <div class="col-lg-4 col-md-2 col-5">
                     <div class="middle-right-area">
@@ -115,145 +120,83 @@
                             <div class="cart-items">
                                 <a href="javascript:void(0)" class="main-btn">
                                     <i class="lni lni-cart"></i>
-                                    <span class="total-items">0</span>
+                                    <span class="total-items">@(Context.Session.GetInt32("CartCount") ?? 0)</span>
                                 </a>
                                 <!-- Shopping Item -->
-                                <div class="shopping-item">
-                                    <div class="dropdown-cart-header">
-                                        <span>2 Items</span>
-                                        <a href="cart.html">View Cart</a>
-                                    </div>
-                                    <ul class="shopping-list">
-                                        <li>
-                                            <a href="javascript:void(0)" class="remove" title="Remove this item">
-                                                <i class="lni lni-close"></i>
-                                            </a>
-                                            <div class="cart-img-head">
-                                                <a class="cart-img" href="product-details.html">
-
-                                                    <img src="~/template//template/assets/images/header/cart-items/item1.jpg" alt="#">
-
-                                                </a>
-                                            </div>
-
-                                            <div class="content">
-                                                <h4>
-                                                    <a href="product-details.html">
-                                                        Apple Watch Series 6
-                                                    </a>
-                                                </h4>
-                                                <p class="quantity">1x - <span class="amount">$99.00</span></p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" class="remove" title="Remove this item">
-                                                <i class="lni lni-close"></i>
-                                            </a>
-                                            <div class="cart-img-head">
-                                                <a class="cart-img" href="product-details.html">
-
-                                                    <img src="~/template//template/assets/images/header/cart-items/item2.jpg" alt="#">
-
-                                                </a>
-                                            </div>
-                                            <div class="content">
-                                                <h4><a href="product-details.html">Wi-Fi Smart Camera</a></h4>
-                                                <p class="quantity">1x - <span class="amount">$35.00</span></p>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="bottom">
-                                        <div class="total">
-                                            <span>Total</span>
-                                            <span class="total-amount">$134.00</span>
-                                        </div>
-
-                                        <a href="/Checkout/Index" class="btn animate">Checkout</a>
-
-                                    </div>
-                                </div>
+                                <Partial name="_CartWithHeader" />
+                                <!--/ End Shopping Item -->
                             </div>
-                            <!--/ End Shopping Item -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- End Header Middle -->
-    <!-- Start Header Bottom -->
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8 col-md-6 col-12">
-                <div class="nav-inner">
-                    <!-- Start Mega Category Menu -->
-                    <div class="mega-category-menu">
-                        <span class="cat-button"><i class="lni lni-menu"></i>All Categories</span>
-                        <ul class="sub-category">
-                            @foreach (var category in Model.Categories)
-                            {
-                                <li><a asp-controller="Category" asp-action="Index" asp-route-id="@category.Id">@category.Name</a></li>
+        <!-- End Header Middle -->
+        <!-- Start Header Bottom -->
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 col-md-6 col-12">
+                    <div class="nav-inner">
+                        <!-- Start Mega Category Menu -->
+                        <div class="mega-category-menu">
+                            <span class="cat-button"><i class="lni lni-menu"></i>All Categories</span>
+                            <ul class="sub-category">
+                                @foreach (var category in Model.Categories)
+                                {
+                                    <li><a asp-controller="Category" asp-action="Index" asp-route-id="@category.Id">@category.Name</a></li>
 
-                            }
+                                }
+                            </ul>
+                        </div>
+                        <!-- End Mega Category Menu -->
+                        <!-- Start Navbar -->
+                        <nav class="navbar navbar-expand-lg">
+                            <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                    aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                                <span class="toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                                <ul id="nav" class="navbar-nav ms-auto">
+                                    <li class="nav-item">
+                                        <a href="index.html" aria-label="Toggle navigation">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="contact.html" aria-label="Toggle navigation">About Us</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="contact.html" aria-label="Toggle navigation">Contact Us</a>
+                                    </li>
+                                </ul>
+                            </div> <!-- navbar collapse -->
+                        </nav>
+                        <!-- End Navbar -->
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-12">
+                    <!-- Start Nav Social -->
+                    <div class="nav-social">
+                        <h5 class="title">Follow Us:</h5>
+                        <ul>
+                            <li>
+                                <a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)"><i class="lni lni-instagram"></i></a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)"><i class="lni lni-skype"></i></a>
+                            </li>
                         </ul>
                     </div>
-                    <!-- End Mega Category Menu -->
-                    <!-- Start Navbar -->
-                    <nav class="navbar navbar-expand-lg">
-                        <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                                aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="toggler-icon"></span>
-                            <span class="toggler-icon"></span>
-                            <span class="toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
-                            <ul id="nav" class="navbar-nav ms-auto">
-                                <li class="nav-item">
-                                    <a href="/Home/Index" aria-label="Toggle navigation">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Page/Detail" aria-label="Toggle navigation">About Us</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="/Page/Index" aria-label="Toggle navigation">Contact Us</a>
-                                </li>
-                            </ul>
-                        </div> <!-- navbar collapse -->
-                    </nav>
-                    <!-- End Navbar -->
+                    <!-- End Nav Social -->
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-6 col-12">
-                <!-- Start Nav Social -->
-                <div class="nav-social">
-                    <h5 class="title">Follow Us:</h5>
-                    <ul>
-                        <li>
-                            <a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)"><i class="lni lni-instagram"></i></a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)"><i class="lni lni-skype"></i></a>
-                        </li>
-                    </ul>
-                </div>
-                <!-- End Nav Social -->
             </div>
         </div>
-    </div>
-    <!-- End Header Bottom -->
+        <!-- End Header Bottom -->
 </header>
-@section scripts {
-    <script>
-        document.getElementById("searchForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-            document.getElementById("searchForm").submit();
-        });
-    </script>
-}

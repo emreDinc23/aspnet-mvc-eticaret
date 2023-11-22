@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Uk.Eticaret.EntityFramework;
 using Uk.Eticaret.EntityFramework.Entities;
@@ -23,7 +22,7 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
 
         public IActionResult Search(string categoryId, string searchTerm)
         {
-            var filteredProducts = _context.Products.Include(e => e.Images).Select(e => e);
+            var filteredProducts = _context.Products.Include(e => e.Images).Include(c => c.Comments).Select(e => e);
 
             // Kategoriye göre filtreleme
             if (!string.IsNullOrEmpty(categoryId) && int.TryParse(categoryId, out var categoryIdInt))
@@ -38,13 +37,14 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
             }
 
             // Sonuçları listele
-            var model = new SearchViewModel();
+            var model = new ProductListViewModel();
+            model.SearchTerm = searchTerm;
             model.Products = filteredProducts.ToList();
 
             // Eğer belirtilen kriterlere uygun ürün bulunamazsa, tüm ürünleri getir
             if (model.Products.Count == 0)
             {
-                model.Products = _context.Products.ToList();
+                model.Products = _context.Products.Include(e => e.Comments).Include(c => c.Images).ToList();
                 string errorMessage = string.IsNullOrEmpty(categoryId)
                     ? $"Belirtilen isimdeki ürünler bulunamadı. Tüm ürünler listelendi."
                     : $"Belirtilen kategori ve isimdeki ürünler bulunamadı. Tüm ürünler listelendi.";
@@ -66,7 +66,7 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
         public IActionResult Detail(string slug)
         {
             // ID'ye göre ürünü bul
-            var product = _context.Products
+            var product = _context.Products.Include(e => e.Images)
                                     .FirstOrDefault(p => p.ProductName == slug);
 
             if (product == null)

@@ -1,0 +1,49 @@
+﻿@using Newtonsoft.Json
+
+@{
+    var cartList = Context.Session.GetString("Cart");
+    var cartProducts = string.IsNullOrEmpty(cartList) ? new List<CartProductModel>() : JsonConvert.DeserializeObject<List<CartProductModel>>(cartList);
+}
+<div class="shopping-item">
+    <div class="dropdown-cart-header">
+        <span>@(Context.Session.GetInt32("CartCount") ?? 0) Items</span>
+        <a asp-controller="Cart" asp-action="Index">View Cart</a>
+    </div>
+    <ul class="shopping-list">
+        @foreach (var cartProduct in cartProducts)
+        {
+            <li>
+                <a href="javascript:void(0)" class="remove" title="Remove this item">
+                    <i class="lni lni-close"></i>
+                </a>
+                <div class="cart-img-head">
+                    <a class="cart-img" href="product-details.html">
+
+                        <img src="@cartProduct.ProductImage" alt="#">
+
+                    </a>
+                </div>
+
+                <div class="content">
+                    <h4>
+                        <a href="product-details.html">
+                            @cartProduct.ProductName
+                        </a>
+                    </h4>
+                    <p class="quantity">@cartProduct.Quantity x -<span class="amount">$@cartProduct.UnitPrice</span></p>
+                </div>
+            </li>
+        }
+
+    </ul>
+    <div class="bottom">
+        <div class="total">
+            <span>Total</span>
+            <span class="total-amount">$@(cartProducts.Sum(p => p.TotalPrice))</span>
+        </div>
+
+        <a asp-controller="Checkout" asp-action="Index" class="btn animate">Checkout</a>
+
+    </div>
+</div>
+                            </div>

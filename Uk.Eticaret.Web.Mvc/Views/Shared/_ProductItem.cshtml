@@ -1,31 +1,54 @@
-﻿<div class="col-lg-3 col-md-6 col-12">
-    <!-- Start Single Product -->
-    <div class="single-product">
-        <div class="product-image">
+﻿@model Product
+@{
+    var ratingIntegerPart = (int)Math.Floor(Model.ProductRating);
+    var remainingStars = 5 - ratingIntegerPart;
 
-            <img src="/template/assets/images/products/product-1.jpg" alt="#">
+}
 
-            <div class="button">
-                <a href="product-details.html" class="btn"><i class="lni lni-cart"></i> Add to Cart</a>
-            </div>
-        </div>
-        <div class="product-info">
-            <span class="category">Watches</span>
-            <h4 class="title">
-                <a href="product-grids.html">Xiaomi Mi Band 5</a>
-            </h4>
-            <ul class="review">
-                <li><i class="lni lni-star-filled"></i></li>
-                <li><i class="lni lni-star-filled"></i></li>
-                <li><i class="lni lni-star-filled"></i></li>
-                <li><i class="lni lni-star-filled"></i></li>
-                <li><i class="lni lni-star"></i></li>
-                <li><span>4.0 Review(s)</span></li>
-            </ul>
-            <div class="price">
-                <span>$199.00</span>
-            </div>
+<!-- Start Single Product -->
+<div class="single-product">
+    <div class="product-image">
+
+        @if (Model.Images != null && Model.Images.Any())
+        {
+            <img src="@Helper.GetProductImage(Model.Images.First().ImageUrl)" alt="Product Image">
+        }
+        else
+        {
+            <img src="/template/assets/images/product/default.jpg" alt="Product Image">
+        }
+        <div class="button">
+            <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@Model.Id" class="btn">
+                <i class="lni lni-cart"></i> Add to Cart
+            </a>
         </div>
     </div>
-    <!-- End Single Product -->
+    <div class="product-info">
+        @if (Model.Categories.Any())
+        {
+            <span class="category">
+                @Model.Categories.FirstOrDefault().Category.Name
+            </span>
+        }
+        <h4 class="title">
+            <a href="@Url.Action("Detail", "Product",new{slug=Model.ProductName})">@Model.ProductName</a>
+        </h4>
+        <ul class="review">
+            @for (int i = 0; i < ratingIntegerPart; i++)
+            {
+                <li><i class="lni lni-star-filled"></i></li>
+            }
+            @for (int i = ratingIntegerPart; i < 5; i++)
+            {
+                <li><i class="lni lni-star"></i></li>
+            }
+            <li>
+                <span>@Model.Comments.Count Review(s)</span>
+            </li>
+        </ul>
+        <div class="price">
+            <span>$@Model.Price</span>
+        </div>
+    </div>
 </div>
+<!-- End Single Product -->
