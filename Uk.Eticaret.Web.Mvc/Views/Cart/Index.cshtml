@@ -1,11 +1,15 @@
-<!-- Start Breadcrumbs -->
+@using Newtonsoft.Json
 
+@{
+    var cartList = Context.Session.GetString("Cart");
+    var cartProducts = string.IsNullOrEmpty(cartList) ? new List<CartProductModel>() : JsonConvert.DeserializeObject<List<CartProductModel>>(cartList);
+}
 <div class="breadcrumbs">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 col-md-6 col-12">
                 <div class="breadcrumbs-content">
-                    <h1 class="page-title">Cart</h1>
+                    <h1 class="page-title">Cart <small>(@(Context.Session.GetInt32("CartCount") ?? 0) item)</small></h1>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-12">
@@ -47,127 +51,130 @@
             </div>
             <!-- End Cart List Title -->
             <!-- Cart Single List list -->
-            <div class="cart-single-list">
-                <div class="row align-items-center">
-                    <div class="col-lg-1 col-md-1 col-12">
+            @foreach (var cartProduct in cartProducts)
+            {
+                <div class="cart-single-list">
+                    <div class="row align-items-center">
+                        <div class="col-lg-1 col-md-1 col-12">
 
-                        <a href="product-details.html"><img src="~/template/assets/images/cart/01.jpg" alt="#"></a>
+                            <a href="product-details.html"><img src="@cartProduct.ProductImage" alt="#"></a>
 
-                    </div>
-                    <div class="col-lg-4 col-md-3 col-12">
-                        <h5 class="product-name">
-                            <a href="product-details.html">
-                                Canon EOS M50 Mirrorless Camera
-                            </a>
-                        </h5>
-                        <p class="product-des">
-                            <span><em>Type:</em> Mirrorless</span>
-                            <span><em>Color:</em> Black</span>
-                        </p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <div class="count-input">
-                            <select class="form-control">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-12">
+                            <h5 class="product-name">
+                                <a href="product-details.html">
+                                    @cartProduct.ProductName
+                                </a>
+                            </h5>
+                            <p class="product-des">
+                                <span><em>Type:</em> Mirrorless</span>
+                                <span><em>Color:</em> Black</span>
+                            </p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-12">
+                            <div class="count-input">
+                                <select class="form-control">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-12">
+                            <p>$@cartProduct.UnitPrice</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-12">
+                            <p>$29.00</p>
+                        </div>
+                        <div class="col-lg-1 col-md-2 col-12">
+                            <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>$910.00</p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>$29.00</p>
-                    </div>
-                    <div class="col-lg-1 col-md-2 col-12">
-                        <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
-                    </div>
                 </div>
+            }
+            <!-- End Single List list -->
+            @*             <!-- Cart Single List list -->
+            <div class="cart-single-list">
+            <div class="row align-items-center">
+            <div class="col-lg-1 col-md-1 col-12">
+
+            <a href="product-details.html"><img src="~/template/assets/images/cart/02.jpg" alt="#"></a>
+
+            </div>
+            <div class="col-lg-4 col-md-3 col-12">
+            <h5 class="product-name">
+            <a href="product-details.html">
+            Apple iPhone X 256 GB Space Gray
+            </a>
+            </h5>
+            <p class="product-des">
+            <span><em>Memory:</em> 256 GB</span>
+            <span><em>Color:</em> Space Gray</span>
+            </p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-12">
+            <div class="count-input">
+            <select class="form-control">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            </select>
+            </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-12">
+            <p>$1100.00</p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-12">
+            <p>—</p>
+            </div>
+            <div class="col-lg-1 col-md-2 col-12">
+            <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
+            </div>
+            </div>
             </div>
             <!-- End Single List list -->
             <!-- Cart Single List list -->
             <div class="cart-single-list">
-                <div class="row align-items-center">
-                    <div class="col-lg-1 col-md-1 col-12">
+            <div class="row align-items-center">
+            <div class="col-lg-1 col-md-1 col-12">
 
-                        <a href="product-details.html"><img src="~/template/assets/images/cart/02.jpg" alt="#"></a>
+            <a href="product-details.html"><img src="~/template/assets/images/cart/03.jpg" alt="#"></a>
 
-                    </div>
-                    <div class="col-lg-4 col-md-3 col-12">
-                        <h5 class="product-name">
-                            <a href="product-details.html">
-                                Apple iPhone X 256 GB Space Gray
-                            </a>
-                        </h5>
-                        <p class="product-des">
-                            <span><em>Memory:</em> 256 GB</span>
-                            <span><em>Color:</em> Space Gray</span>
-                        </p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <div class="count-input">
-                            <select class="form-control">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>$1100.00</p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>—</p>
-                    </div>
-                    <div class="col-lg-1 col-md-2 col-12">
-                        <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
-                    </div>
-                </div>
             </div>
-            <!-- End Single List list -->
-            <!-- Cart Single List list -->
-            <div class="cart-single-list">
-                <div class="row align-items-center">
-                    <div class="col-lg-1 col-md-1 col-12">
-
-                        <a href="product-details.html"><img src="~/template/assets/images/cart/03.jpg" alt="#"></a>
-
-                    </div>
-                    <div class="col-lg-4 col-md-3 col-12">
-                        <h5 class="product-name"><a href="product-details.html">HP LaserJet Pro Laser Printer</a></h5>
-                        <p class="product-des">
-                            <span><em>Type:</em> Laser</span>
-                            <span><em>Color:</em> White</span>
-                        </p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <div class="count-input">
-                            <select class="form-control">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>$550.00</p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p>—</p>
-                    </div>
-                    <div class="col-lg-1 col-md-2 col-12">
-                        <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
-                    </div>
-                </div>
+            <div class="col-lg-4 col-md-3 col-12">
+            <h5 class="product-name"><a href="product-details.html">HP LaserJet Pro Laser Printer</a></h5>
+            <p class="product-des">
+            <span><em>Type:</em> Laser</span>
+            <span><em>Color:</em> White</span>
+            </p>
             </div>
-            <!-- End Single List list -->
+            <div class="col-lg-2 col-md-2 col-12">
+            <div class="count-input">
+            <select class="form-control">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            </select>
+            </div>
+            </div>
+            <div class="col-lg-2 col-md-2 col-12">
+            <p>$550.00</p>
+            </div>
+            <div class="col-lg-2 col-md-2 col-12">
+            <p>—</p>
+            </div>
+            <div class="col-lg-1 col-md-2 col-12">
+            <a class="remove-item" href="javascript:void(0)"><i class="lni lni-close"></i></a>
+            </div>
+            </div>
+            </div>
+            <!-- End Single List list --> *@
         </div>
         <div class="row">
             <div class="col-12">
@@ -189,15 +196,15 @@
                         <div class="col-lg-4 col-md-6 col-12">
                             <div class="right">
                                 <ul>
-                                    <li>Cart Subtotal<span>$2560.00</span></li>
+                                    <li>Cart Subtotal<span>@cartProducts.Sum(p => p.TotalPrice)</span></li>
                                     <li>Shipping<span>Free</span></li>
                                     <li>You Save<span>$29.00</span></li>
-                                    <li class="last">You Pay<span>$2531.00</span></li>
+                                    <li class="last">You Pay<span>$@cartProducts.Sum(p => p.TotalPrice)</span></li>
                                 </ul>
                                 <div class="button">
-                                    <a href="checkout.html" class="btn">Checkout</a>
+                                    <a asp-controller="Checkout" asp-action="Index" class="btn">Checkout</a>
 
-                                    <a href="/Home/Index" class="btn btn-alt">Continue shopping</a>
+                                    <a asp-controller="Home" asp-action="Index" class="btn btn-alt">Continue shopping</a>
 
                                 </div>
                             </div>

@@ -1,4 +1,6 @@
-﻿ <!-- Start Hero Area -->
+﻿@model ProductListViewModel
+
+<!-- Start Hero Area -->
 @await Component.InvokeAsync("Hero")
 
 <!-- End Hero Area -->
@@ -8,7 +10,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="section-title">
-                    <h2>Trending Product</h2>
+                    <h2>Last Products</h2>
                     <p>
                         There are many variations of passages of Lorem Ipsum available, but the majority have
                         suffered alteration in some form.
@@ -17,7 +19,12 @@
             </div>
         </div>
         <div class="row">
-            <partial name="_ProductItem" />
+            @foreach (var product in Model.Products)
+            {
+                <div class="col-lg-3 col-md-6 col-12">
+                    <partial name="_ProductItem" model="product" />
+                </div>
+            }
         </div>
     </div>
 </section>
@@ -27,7 +34,7 @@
 
 <!-- Start Banner Area -->
 <section class="banner section">
-   <partial name="_FeaturedProductsViewComponent" />
+    <partial name="_FeaturedProductsViewComponent" />
 </section>
 <!-- End Banner Area -->
 @section Scripts{

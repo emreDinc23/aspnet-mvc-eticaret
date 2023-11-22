@@ -8,10 +8,9 @@
                     <div class="hero-slider">
                         <!-- Start Single Slider -->
                         @foreach (var pr in Model)
-                        { var imageUrl = ViewBag.ImagesUrl.ContainsKey(pr.Id) ? ViewBag.ImagesUrl[pr.Id] : null;
+                        {
                             <div class="single-slider"
-
-                                 style="background-image: url(@imageUrl);">
+                                 style="background-image: url(/template/assets/images/hero/slider-bg1.jpg);">
                                 <div class="content">
                                     <h2>
                                         <span>No restocking fee ($35 savings)</span>
