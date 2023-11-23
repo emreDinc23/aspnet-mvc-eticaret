@@ -9,6 +9,7 @@ namespace Uk.Eticaret.Web.Mvc.Models
         public string ProductDescription { get; internal set; }
 
         public string ProductColor { get; internal set; }
+        public string ImageUrl { get; internal set; }
         public decimal ProductRating { get; internal set; }
 
         public decimal Price { get; internal set; }

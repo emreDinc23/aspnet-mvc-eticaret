@@ -1,4 +1,4 @@
-@model SearchViewModel
+@model ProductListViewModel
 
 <!-- Start Breadcrumbs -->
 <div class="breadcrumbs">
@@ -224,7 +224,7 @@
                                                     <img src="/template/assets/images/product/default.jpg" alt="Product Image">
                                                 }
                                                 <div class="button">
-                                                    <a href="product-details.html" class="btn">
+                                                    <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@product.Id" class="btn">
                                                         <i class="lni lni-cart"></i> Add to Cart
                                                     </a>
                                                 </div>

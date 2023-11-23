@@ -17,6 +17,9 @@ namespace Uk.Eticaret.Web.Mvc.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
+            if (!HttpContext.Session.Keys.Any(e => e == "CartCount"))
+                HttpContext.Session.SetInt32("CartCount", 0);
+
             var categories = _context.Categories
                 .Where(b => b.IsActive);
 
