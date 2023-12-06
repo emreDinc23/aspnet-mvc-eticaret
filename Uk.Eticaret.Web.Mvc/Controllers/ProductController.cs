@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Uk.Eticaret.EntityFramework;
-using Uk.Eticaret.EntityFramework.Entities;
 using Uk.Eticaret.Web.Mvc.Models;
 
 namespace Uk.Eticaret.Web.Mvc.Controllers

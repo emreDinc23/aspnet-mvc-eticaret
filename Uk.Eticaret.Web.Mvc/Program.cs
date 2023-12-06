@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Uk.Eticaret.EntityFramework;
 using Uk.Eticaret.EntityFramework.Seeders;
+using Uk.Eticaret.Web.Mvc.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
@@ -10,7 +11,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     var connectionString = builder.Configuration.GetConnectionString("Default");
     options.UseSqlServer(connectionString);
 });
+
 builder.Services.AddSession();
+
+builder.Services.AddSingleton<SettingsService>();
 
 var app = builder.Build();
 

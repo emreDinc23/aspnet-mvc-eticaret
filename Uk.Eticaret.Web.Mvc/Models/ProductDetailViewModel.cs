@@ -1,6 +1,4 @@
-﻿using Uk.Eticaret.EntityFramework.Entities;
-
-namespace Uk.Eticaret.Web.Mvc.Models
+﻿namespace Uk.Eticaret.Web.Mvc.Models
 {
     public class ProductDetailViewModel
     {
