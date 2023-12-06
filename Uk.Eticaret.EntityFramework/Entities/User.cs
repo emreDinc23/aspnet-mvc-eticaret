@@ -28,6 +28,7 @@ namespace Uk.Eticaret.EntityFramework.Entities
         public DateTime DateOfBirth { get; set; }
 
         public string Gender { get; set; }
+        public string Roles { get; set; }
         public bool IsActive { get; set; }
 
         public ICollection<Order> Orders { get; set; }

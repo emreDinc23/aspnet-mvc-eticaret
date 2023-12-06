@@ -106,13 +106,14 @@ namespace Uk.Eticaret.EntityFramework.Seeders
                 var users = new List<User>
             {
                 new User {
-                    FirstName = "John",
-                    LastName = "Doe",
-                    Username = "johndoe",
-                    Email = "john@example.com",
+                    FirstName = "Emre",
+                    LastName = "Dinc",
+                    Username = "emredinc",
+                    Email = "emre@example.com",
                     Password = "password123",
                     DateOfBirth = new DateTime(1990, 1, 1),
                     Gender = "Erkek",
+                    Roles = "Admin",
                     IsActive = true },
 
                 new User {
