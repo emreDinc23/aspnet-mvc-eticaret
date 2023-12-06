@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Uk.Eticaret.EntityFramework;
 using Uk.Eticaret.EntityFramework.Seeders;
@@ -14,7 +15,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddSession();
 
-builder.Services.AddSingleton<SettingsService>();
+builder.Services.AddScoped<SettingsService>();
+
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(option =>
+    {
+        option.LoginPath = "/Auth/Login";
+        option.LogoutPath = "/Auth/Logout";
+        option.AccessDeniedPath = "/Auth/AccessDenied";
+    });
 
 var app = builder.Build();
 
@@ -28,7 +38,7 @@ else
 {
     using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    dbContext.Database.EnsureDeleted();
+    //dbContext.Database.EnsureDeleted();
     dbContext.Database.EnsureCreated();
     DbSeeder.SeedAll(dbContext);
 }
@@ -40,6 +50,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
