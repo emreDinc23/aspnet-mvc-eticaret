@@ -4,7 +4,8 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
 {
     public class PageController : Controller
     {
-        public IActionResult Index()
+        [Route("/contact-us")]
+        public IActionResult ContactUs()
         {
             return View();
         }

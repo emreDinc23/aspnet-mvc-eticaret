@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Uk.Eticaret.EntityFramework.Entities;
+﻿using Uk.Eticaret.EntityFramework.Entities;
 
 namespace Uk.Eticaret.Web.Mvc.Models
 {

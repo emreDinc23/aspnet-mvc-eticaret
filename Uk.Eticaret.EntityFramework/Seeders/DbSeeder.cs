@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using Microsoft.EntityFrameworkCore;
 using Uk.Eticaret.EntityFramework.Entities;
 
 namespace Uk.Eticaret.EntityFramework.Seeders
