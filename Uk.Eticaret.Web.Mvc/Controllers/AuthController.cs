@@ -33,6 +33,7 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.DateOfBirth, user.DateOfBirth.ToString()),
                 };
 
