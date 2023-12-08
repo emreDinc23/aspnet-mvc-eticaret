@@ -20,6 +20,7 @@ namespace Uk.Eticaret.EntityFramework
         public DbSet<Setting> Settings { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<UserCreditCard> UserCreditCards { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
