@@ -33,6 +33,6 @@ namespace Uk.Eticaret.EntityFramework.Entities
 
         public ICollection<Order> Orders { get; set; }
         public ICollection<Address> Addresses { get; set; }
-        public ICollection<UserCreditCard> UserCreditCards { get; set; }
+        public List<UserCreditCard> UserCreditCards { get; set; }
     }
 }
