@@ -1,0 +1,58 @@
+﻿    <style>
+        .bodysuccess {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .containersuccess {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .iconsuccess {
+            font-size: 60px;
+            color: #4CAF50;
+        }
+
+        .h1success {
+            color: #333;
+        }
+
+        .psuccess {
+            color: #777;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .buttonsuccess {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+            .buttonsuccess:hover {
+                background-color: #45a049;
+            }
+    </style>
+    <span class="bodysuccess">
+    <div class="containersuccess">
+        <div class="iconsuccess">&#10003;</div>
+            <h1 class="h1success">Payment Successful</h1>
+            <p class="psuccess">Your order has been placed successfully. Thank you for shopping with us!</p>
+            <a asp-controller="Product" asp-action="Index" class="buttonsuccess">Continue Shopping</a>
+    </div>
+    </span>

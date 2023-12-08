@@ -15,13 +15,11 @@ namespace Uk.Eticaret.Web.Mvc.Views.Shared.Components.Heroo
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var productsIsVisibleSlider = _context.Products.Where(pr => pr.IsVisibleSlider).ToList();
-            ViewBag.ImagesUrl = _context.ProductImages
-      .GroupBy(pi => pi.ProductId)
-      .ToDictionary(
-          group => group.Key,
-          group => group.FirstOrDefault()?.ImageUrl
-      );
+            var productsIsVisibleSlider = _context.Products
+                .Include(e => e.Images)
+                .Where(pr => pr.IsVisibleSlider)
+                .ToList();
+
             return View(productsIsVisibleSlider);
         }
     }
