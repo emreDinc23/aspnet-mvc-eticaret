@@ -72,7 +72,7 @@
                                 <input type="checkbox" class="form-check-input width-auto" asp-for="RememberMe">
                                 <label class="form-check-label">Remember me</label>
                             </div>
-                            <a class="lost-pass" href="account-password-recovery.html">Forgot password?</a>
+                            <a class="lost-pass" asp-controller="Auth"asp-action="ForgotPassword">Forgot password?</a>
                         </div>
                         <div class="button">
                             <button class="btn" type="submit">Login</button>

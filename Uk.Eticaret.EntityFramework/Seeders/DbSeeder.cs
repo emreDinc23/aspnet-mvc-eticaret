@@ -78,6 +78,7 @@ namespace Uk.Eticaret.EntityFramework.Seeders
                     DateOfBirth = new DateTime(1990, 1, 1),
                     Gender = "Erkek",
                     Roles = "Admin",
+                    PhoneNumber = "1234567890",
                     IsActive = true },
 
                 new User {
@@ -89,7 +90,7 @@ namespace Uk.Eticaret.EntityFramework.Seeders
                     DateOfBirth = new DateTime(1992, 3, 15),
                     Gender = "Kadın",
                     Roles = "Admin",
-
+                    PhoneNumber = "1234567890",
                     IsActive = true },
                  };
 

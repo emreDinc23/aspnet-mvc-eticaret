@@ -1,4 +1,5 @@
-﻿ <!-- Start Breadcrumbs -->
+﻿@model RegisterModel
+<!-- Start Breadcrumbs -->
 <div class="breadcrumbs">
     <div class="container">
         <div class="row align-items-center">
@@ -27,41 +28,51 @@
                         <h3>No Account? Register</h3>
                         <p>Registration takes less than a minute but gives you full control over your orders.</p>
                     </div>
-                    <form class="row" method="post">
+                    <form class="row" method="post" asp-action="Register">
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger" asp-validation-summary="All"></div>
+                        }
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="reg-fn">First Name</label>
-                                <input class="form-control" type="text" id="reg-fn" required>
+                                <input class="form-control" asp-for="FirstName" type="text" id="reg-fn" required>
+                                <span class="text-danger" asp-validation-for="FirstName"></span>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="reg-ln">Last Name</label>
-                                <input class="form-control" type="text" id="reg-ln" required>
+                                <input class="form-control" asp-for="LastName" type="text" id="reg-ln" required>
+                                <span class="text-danger" asp-validation-for="LastName"></span>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="reg-email">E-mail Address</label>
-                                <input class="form-control" type="email" id="reg-email" required>
+                                <input class="form-control" asp-for="Email" type="email" id="reg-email" required>
+                                <span class="text-danger" asp-validation-for="Email"></span>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="reg-phone">Phone Number</label>
-                                <input class="form-control" type="text" id="reg-phone" required>
+                                <input class="form-control" asp-for="PhoneNumber" type="text" id="reg-phone" required>
+                                <span class="text-danger" asp-validation-for="PhoneNumber"></span>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="reg-pass">Password</label>
-                                <input class="form-control" type="password" id="reg-pass" required>
+                                <input class="form-control" asp-for="Password" type="password" id="reg-pass" required>
+                                <span class="text-danger" asp-validation-for="Password"></span>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="reg-pass-confirm">Confirm Password</label>
-                                <input class="form-control" type="password" id="reg-pass-confirm" required>
+                                <input class="form-control" asp-for="ConfirmPassword" type="password" id="reg-pass-confirm" required>
+                                <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
                             </div>
                         </div>
                         <div class="button">
@@ -77,3 +88,7 @@
     </div>
 </div>
 <!-- End Account Register Area -->
+@section Scripts {
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}

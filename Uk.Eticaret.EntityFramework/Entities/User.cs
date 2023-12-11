@@ -18,6 +18,10 @@ namespace Uk.Eticaret.EntityFramework.Entities
         public string Username { get; set; }
 
         [Required]
+        [StringLength(30, ErrorMessage = "Lütfen en fazla 30 karakter giriniz.")]
+        public string PhoneNumber { get; set; }
+
+        [Required]
         [EmailAddress]
         public string Email { get; set; }
 
@@ -25,6 +29,8 @@ namespace Uk.Eticaret.EntityFramework.Entities
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        public string? ResetPasswordToken { get; set; }
+        public DateTime? ResetPasswordTokenExpiration { get; set; }
         public DateTime DateOfBirth { get; set; }
 
         public string Gender { get; set; }
