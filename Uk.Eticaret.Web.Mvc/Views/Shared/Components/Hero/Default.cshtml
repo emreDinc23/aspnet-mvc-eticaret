@@ -10,7 +10,7 @@
                         @foreach (var pr in Model)
                         {
                             <div class="single-slider"
-                                 style="background-image: url(/template/assets/images/hero/slider-bg1.jpg);">
+                                 style="background-image: url(@pr.Images.Select(e=>e.ImageUrl).FirstOrDefault());">
                                 <div class="content">
                                     <h2>
                                         <span>No restocking fee ($35 savings)</span>
@@ -21,7 +21,8 @@
                                     </p>
                                     <h3><span>Now Only</span> @pr.Price</h3>
                                     <div class="button">
-                                        <a href="product-grids.html" class="btn">Shop Now</a>
+                                        <a href="@Url.Action("Detail", "Product",new{slug=pr.ProductName})" class="btn">Shop Now</a>
+                                        
                                     </div>
                                 </div>
                             </div>

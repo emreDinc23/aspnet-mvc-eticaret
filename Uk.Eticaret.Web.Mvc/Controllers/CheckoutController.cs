@@ -23,6 +23,11 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
             return View();
         }
 
+        public IActionResult Success()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddOrder(IFormCollection form)
         {
@@ -120,7 +125,7 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
                 var activeCartCount = HttpContext.Session.GetInt32("CartCount") ?? 0;
                 HttpContext.Session.SetInt32("CartCount", activeCartCount - 1);
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Success");
             }
             else
             {

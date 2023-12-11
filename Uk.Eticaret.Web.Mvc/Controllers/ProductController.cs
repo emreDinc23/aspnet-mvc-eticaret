@@ -65,8 +65,11 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
         public IActionResult Detail(string slug)
         {
             // ID'ye göre ürünü bul
-            var product = _context.Products.Include(e => e.Images)
-                                    .FirstOrDefault(p => p.ProductName == slug);
+            var product = _context.Products
+        .Include(e => e.Images)
+        .Include(e => e.Categories)
+            .ThenInclude(cp => cp.Category) // Kategori bilgisini ekleyin
+        .FirstOrDefault(p => p.ProductName == slug);
 
             if (product == null)
             {
@@ -75,6 +78,7 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
 
             var viewModel = new ProductDetailViewModel
             {
+                ProductId = product.Id,
                 ProductName = product.ProductName,
                 ProductDescription = product.ProductDescription,
                 ProductColor = product.ProductColor,
@@ -82,6 +86,9 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
                 Price = product.Price,
                 ProductDate = product.ProductDate,
                 Stock = product.Stock,
+                ImagesUrl = product.Images.Select(img => img.ImageUrl).ToList(),
+                CategoryName = product.Categories.FirstOrDefault()?.Category?.Name,
+                CategoryId = (int)(product.Categories.FirstOrDefault()?.Category?.Id)
             };
 
             return View(viewModel);
