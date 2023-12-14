@@ -1,7 +1,7 @@
 ﻿using Bogus;
-using Uk.Eticaret.EntityFramework.Entities;
+using Uk.Eticaret.Persistence.Entities;
 
-namespace Uk.Eticaret.EntityFramework.Seeders
+namespace Uk.Eticaret.Persistence.Seeders
 {
     public class DbSeeder
     {

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Security.Claims;
-using Uk.Eticaret.EntityFramework;
-using Uk.Eticaret.EntityFramework.Entities;
+using Uk.Eticaret.Persistence;
+using Uk.Eticaret.Persistence.Entities;
 using Uk.Eticaret.Web.Mvc.Models;
 
 namespace Uk.Eticaret.Web.Mvc.Controllers

@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Uk.Eticaret.Web.Mvc.Models;
-using Uk.Eticaret.EntityFramework;
+using Uk.Eticaret.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Uk.Eticaret.EntityFramework.Entities;
+using Uk.Eticaret.Persistence.Entities;
 using Uk.Eticaret.Web.Mvc.Services.Email;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Uk.Eticaret.Web.Mvc.Controllers
 {
@@ -151,7 +150,7 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
                     // E-posta gönderildiğini varsayalım
                     return RedirectToAction("Access", "Page", new { message = "Şifre Sıfırlama bağlantısı Mailinize gönderildi (E posta adresinizi kontrol ediniz" });
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Hata durumunda uygun bir işlem yapabilirsiniz
                     ModelState.AddModelError(string.Empty, "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
@@ -191,7 +190,7 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
         public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
         {
             // Kullanıcıyı, email ve token'a göre veritabanında bul
-            var user = _context.Users.FirstOrDefault(e => e.Email == model.Email && e.ResetPasswordToken == model.Token);
+            var user = await _context.Users.FirstOrDefaultAsync(e => e.Email == model.Email && e.ResetPasswordToken == model.Token);
 
             // Kullanıcı bulunamazsa veya token süresi geçerli değilse, hata sayfasına yönlendir
             if (user == null || user.ResetPasswordTokenExpiration < DateTime.UtcNow)
@@ -214,7 +213,7 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
             user.ResetPasswordTokenExpiration = null;
 
             // Veritabanında güncelleme işlemi
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             // Şifre sıfırlama işlemi başarılıysa, giriş sayfasına yönlendir
             return RedirectToAction("Access", "Page", new { message = "Şifreniz başarıyla sıfırlandı. Login sayfasına yönlendiriliyorsunuz..." });

@@ -1,27 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Uk.Eticaret.EntityFramework;
+using Uk.Eticaret.Business.Services.Abstract;
 using Uk.Eticaret.Web.Mvc.Models;
 
 namespace Uk.Eticaret.Web.Mvc.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IProductService _productService;
 
-        public ProductController(AppDbContext context)
+        public ProductController(IProductService productService)
         {
-            _context = context;
+            _productService = productService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var productList = await _productService.GetAllProductAsync();
+            return View(productList);
         }
 
-        public IActionResult Search(string categoryId, string searchTerm)
+        public async Task<IActionResult> Search(string categoryId, string searchTerm)
         {
-            var filteredProducts = _context.Products.Include(e => e.Images).Include(c => c.Comments).Select(e => e);
+            var filteredProducts = _productService.GetAllQueryable();
 
             // Kategoriye göre filtreleme
             if (!string.IsNullOrEmpty(categoryId) && int.TryParse(categoryId, out var categoryIdInt))
@@ -43,7 +43,7 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
             // Eğer belirtilen kriterlere uygun ürün bulunamazsa, tüm ürünleri getir
             if (model.Products.Count == 0)
             {
-                model.Products = _context.Products.Include(e => e.Comments).Include(c => c.Images).ToList();
+                model.Products = await _productService.GetAllProductAsync();
                 string errorMessage = string.IsNullOrEmpty(categoryId)
                     ? $"Belirtilen isimdeki ürünler bulunamadı. Tüm ürünler listelendi."
                     : $"Belirtilen kategori ve isimdeki ürünler bulunamadı. Tüm ürünler listelendi.";
@@ -62,14 +62,9 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
         }
 
         [HttpGet("Product/Detail/{slug}")]
-        public IActionResult Detail(string slug)
+        public async Task<IActionResult> Detail(string slug)
         {
-            // ID'ye göre ürünü bul
-            var product = _context.Products
-        .Include(e => e.Images)
-        .Include(e => e.Categories)
-            .ThenInclude(cp => cp.Category) // Kategori bilgisini ekleyin
-        .FirstOrDefault(p => p.ProductName == slug);
+            var product = await _productService.GetProduct(slug);
 
             if (product == null)
             {
