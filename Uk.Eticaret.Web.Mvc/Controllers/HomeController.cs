@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using Uk.Eticaret.EntityFramework;
+using Uk.Eticaret.Persistence;
 using Uk.Eticaret.Web.Mvc.Models;
 
 namespace Uk.Eticaret.Web.Mvc.Controllers

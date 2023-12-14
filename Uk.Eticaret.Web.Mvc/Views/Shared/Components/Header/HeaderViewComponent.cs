@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Uk.Eticaret.EntityFramework;
+using Uk.Eticaret.Persistence;
 using Uk.Eticaret.Web.Mvc.Models;
 
 namespace Uk.Eticaret.Web.Mvc.ViewComponents

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Uk.Eticaret.EntityFramework.Entities;
+using Uk.Eticaret.Persistence.Entities;
 
-namespace Uk.Eticaret.EntityFramework
+namespace Uk.Eticaret.Persistence
 {
     public class AppDbContext : DbContext
     {

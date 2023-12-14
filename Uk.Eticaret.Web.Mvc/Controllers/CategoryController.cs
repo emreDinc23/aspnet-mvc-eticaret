@@ -1,30 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Uk.Eticaret.EntityFramework;
+using Uk.Eticaret.Business.Services.Abstract;
+using Uk.Eticaret.Persistence;
 
 namespace Uk.Eticaret.Web.Mvc.Controllers
 {
     public class CategoryController : Controller
     {
+        private readonly ICategoryService _categoryService;
         private readonly AppDbContext _context;
 
-        public CategoryController(AppDbContext context)
+        public CategoryController(ICategoryService categoryService, AppDbContext context)
         {
+            _categoryService = categoryService;
             _context = context;
         }
 
-        public IActionResult Index(int id, string slug)
+        public async Task<IActionResult> Index(int id, string slug)
         {
             // parametreden gelen değere karşılık gelen category id elde edildi
-            var category = _context.Categories.SingleOrDefault(c => c.Id == id);
+            var category = await _categoryService.GetByIdAsync(id);
             // parametreyle uyuşan bir değer yoksa hata dönüldü
             if (category == null)
             {
                 return NotFound();
             }
             // Category id si parametre değerinden gelen değere uygun olan değerler getirildi
-            var productsInCategory = _context.Products
-                .Where(p => p.Categories.Any(cp => cp.CategoryId == category.Id))
-                .ToList();
+            var productsInCategory = await _categoryService.GetProductsInCategoryAsync(id);
 
             //Product images tablosundan ImageUrl verisi çekilip viewbag ile taşındı
             ViewBag.ImagesUrl = _context.ProductImages

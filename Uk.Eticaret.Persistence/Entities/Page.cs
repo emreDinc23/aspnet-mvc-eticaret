@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Uk.Eticaret.EntityFramework.Entities.Abstract;
+using Uk.Eticaret.Persistence.Entities.Abstract;
 
-namespace Uk.Eticaret.EntityFramework.Entities
+namespace Uk.Eticaret.Persistence.Entities
 {
     public class Page : BaseEntity
     {

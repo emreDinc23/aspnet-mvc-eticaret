@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Uk.Eticaret.EntityFramework;
+using Uk.Eticaret.Persistence;
 
 namespace Uk.Eticaret.Web.Mvc.Services
 {

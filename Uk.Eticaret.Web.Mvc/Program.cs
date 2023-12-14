@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
-using Uk.Eticaret.EntityFramework;
-using Uk.Eticaret.EntityFramework.Seeders;
+using Uk.Eticaret.Business.Services;
+using Uk.Eticaret.Business.Services.Abstract;
+using Uk.Eticaret.Persistence;
+using Uk.Eticaret.Persistence.Seeders;
 using Uk.Eticaret.Web.Mvc.Services;
 using Uk.Eticaret.Web.Mvc.Services.Email;
 
@@ -22,6 +24,8 @@ builder.Services.AddScoped<SettingsService>();
 builder.Services.AddMailKit(config => config.UseMailKit(builder.Configuration.GetSection("Email").Get<MailKitOptions>()));
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
 builder.Services.AddTransient<IEmailServices, EmailServices>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

@@ -1,4 +1,4 @@
-﻿using Uk.Eticaret.EntityFramework.Entities;
+﻿using Uk.Eticaret.Persistence.Entities;
 
 namespace Uk.Eticaret.Web.Mvc.Models
 {
