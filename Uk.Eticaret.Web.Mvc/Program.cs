@@ -20,6 +20,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddSession();
 
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<SettingsService>();
 builder.Services.AddMailKit(config => config.UseMailKit(builder.Configuration.GetSection("Email").Get<MailKitOptions>()));
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
