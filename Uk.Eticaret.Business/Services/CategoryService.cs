@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Bogus.Extensions.Italy;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,7 +62,11 @@ namespace Uk.Eticaret.Business.Services
             {
                 // Update category properties
                 existingCategory.Name = category.Name;
-                // ... (diğer özellikler)
+                existingCategory.Description = category.Description;
+                existingCategory.Tags = category.Tags;
+                existingCategory.Products = category.Products;
+                existingCategory.Image = category.Image;
+                existingCategory.IsActive = true;
 
                 await _context.SaveChangesAsync();
                 return true;
