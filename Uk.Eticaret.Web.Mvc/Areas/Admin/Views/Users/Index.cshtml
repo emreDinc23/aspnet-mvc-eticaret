@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Uk.Eticaret.Persistence.Entities.User>
+
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+
+<div class="container-fluid px-4">
+
+    <h1 class="mt-4">Tables</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item">User</li>
+        <li class="breadcrumb-item active">List</li>
+    </ol>
+    <p class="text-center">
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i>
+        </a>
+    </p>
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            User List
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+                            <th>@Html.DisplayNameFor(model => model.LastName)</th>
+                            <th>@Html.DisplayNameFor(model => model.Username)</th>
+                            <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+                            <th>@Html.DisplayNameFor(model => model.Email)</th>
+                            <th>@Html.DisplayNameFor(model => model.Password)</th>
+                            <th>@Html.DisplayNameFor(model => model.Gender)</th>
+                            <th>@Html.DisplayNameFor(model => model.Roles)</th>
+                            <th>@Html.DisplayNameFor(model => model.IsActive)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Username)</td>
+                                <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Password)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Gender)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Roles)</td>
+                                <td>@Html.DisplayFor(modelItem => item.IsActive)</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+<script src="~/admin_template/js/datatables-simple-demo.js"></script>

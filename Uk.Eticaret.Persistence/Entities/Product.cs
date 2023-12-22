@@ -33,8 +33,8 @@ namespace Uk.Eticaret.Persistence.Entities
         public bool IsVisibleSlider { get; set; }
         public DateTime? DeletedAt { get; set; }
 
-        public ICollection<ProductComment> Comments { get; set; }
-        public ICollection<ProductImage> Images { get; set; }
-        public ICollection<CategoryProduct> Categories { get; set; }
+        public ICollection<ProductComment>? Comments { get; set; }
+        public ICollection<ProductImage>? Images { get; set; }
+        public ICollection<CategoryProduct>? Categories { get; set; }
     }
 }

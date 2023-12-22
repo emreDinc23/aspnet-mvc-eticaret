@@ -1,0 +1,84 @@
+﻿@model Uk.Eticaret.Persistence.Entities.User
+
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">User Edit</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item">User</li>
+        <li class="breadcrumb-item active">Edit</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            User Edit
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="mb-3">
+                    <label for="FirstName" class="form-label">First Name</label>
+                    <div class="input-group">
+                        <input type="text" asp-for="FirstName" class="form-control" />
+                        <span class="input-group-text"><i class='bx bx-user'></i></span>
+                    </div>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="LastName" class="form-label">Last Name</label>
+                    <div class="input-group">
+                        <input type="text" asp-for="LastName" class="form-control" />
+                        <span class="input-group-text"><i class='bx bx-user'></i></span>
+                    </div>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="Username" class="form-label">Username</label>
+                    <div class="input-group">
+                        <input type="text" asp-for="Username" class="form-control" />
+                        <span class="input-group-text"><i class='bx bx-user'></i></span>
+                    </div>
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="PhoneNumber" class="form-label">Phone Number</label>
+                    <div class="input-group">
+                        <input type="text" asp-for="PhoneNumber" class="form-control" />
+                        <span class="input-group-text"><i class='bx bx-phone'></i></span>
+                    </div>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="Email" class="form-label">Email</label>
+                    <div class="input-group">
+                        <input type="text" asp-for="Email" class="form-control" />
+                        <span class="input-group-text"><i class='bx bx-envelope'></i></span>
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <!-- Diğer form alanlarını buraya ekleyin -->
+
+                <div class="mb-3 form-check">
+                    <input class="form-check-input" asp-for="IsActive" />
+                    <label class="form-check-label" for="IsActive">Is Active</label>
+                </div>
+
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class='bx bx-save'></i> Save
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class='bx bx-arrow-back'></i> Back to List
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
