@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Uk.Eticaret.Persistence.Entities.Product>
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+<div class="container-fluid px-4">
+   
+<h1 class="mt-4">Tables</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item">Product</li>
+    <li class="breadcrumb-item active">List</li>
+</ol>
+<p class="text-center">
+    <a asp-action="Create" class="btn btn-primary">
+        Product Ekle
+        <i class="bi bi-plus-lg"></i>
+    </a>
+</p>
+<div class="card mb-4">
+<div class="card-header">
+    <i class="fas fa-table me-1"></i>
+    Product List
+</div>
+<div class="card-body">
+<table class="table table-bordered" id="datatablesSimple">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.ProductName)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductDescription)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductColor)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductRating)</th>
+            <th>@Html.DisplayNameFor(model => model.Price)</th>
+            <th>@Html.DisplayNameFor(model => model.ProductDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Stock)</th>
+            <th>@Html.DisplayNameFor(model => model.IsActive)</th>
+            <th>@Html.DisplayNameFor(model => model.IsVisibleSlider)</th>
+            
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
+                <td>@Html.DisplayFor(modelItem => item.ProductDescription)</td>
+                <td>@Html.DisplayFor(modelItem => item.ProductColor)</td>
+                <td>@Html.DisplayFor(modelItem => item.ProductRating)</td>
+                <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                <td>@Html.DisplayFor(modelItem => item.ProductDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.Stock)</td>
+                <td>@Html.DisplayFor(modelItem => item.IsActive)</td>
+                <td>@Html.DisplayFor(modelItem => item.IsVisibleSlider)</td>
+                
+                <td>
+                    <div class="d-flex gap-2">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> <!-- Bootstrap Icons: Pencil -->
+                        </a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">
+                            <i class="bi bi-info-circle"></i> <!-- Bootstrap Icons: Info Circle -->
+                        </a>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-2">
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> <!-- Bootstrap Icons: Trash -->
+                        </a>
+                        <a asp-action="Index" asp-controller="ProductImages" asp-route-id="@item.Id" class="btn btn-primary">
+                            <i class="bi bi-images"></i> <!-- Bootstrap Icons: Images -->
+                        </a>
+                    </div>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+<script src="~/admin_template/js/datatables-simple-demo.js"></script>

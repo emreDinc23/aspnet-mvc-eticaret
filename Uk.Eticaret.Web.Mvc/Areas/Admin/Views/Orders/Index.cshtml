@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Uk.Eticaret.Persistence.Entities.Order>
+
+<!-- Bootstrap ve Bootstrap Icons stilleri -->
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet">
+
+
+<!-- Container başlangıcı -->
+<div class="container-fluid px-4">
+
+    <!-- Sayfa başlığı -->
+    <h1 class="mt-4">Sipariş Listesi</h1>
+
+    <!-- Breadcrumb (sayfa gezinme) menüsü -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Sipariş</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste</li>
+        </ol>
+    </nav>
+
+    <!-- Yeni sipariş oluşturma butonu -->
+    <div class="text-center">
+        <a hidden="true" class="btn btn-success btn-sm" asp-action="Create"><i class="bi bi-plus"></i> Yeni Oluştur</a>
+    </div>
+
+    <!-- Kart başlangıcı -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="bi bi-table"></i> Sipariş Listesi
+        </div>
+
+        <!-- Kart içeriği -->
+        <div class="card-body">
+            <!-- Responsive tablo -->
+            <div class="table-responsive">
+                <table class="table table-bordered" id="datatablesSimple">
+                    <!-- Tablo başlıkları -->
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.OrderDate)</th>
+                            <th>@Html.DisplayNameFor(model => model.User)</th>
+                            <th>@Html.DisplayNameFor(model => model.ShippingAddress)</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+
+                    <!-- Tablo altı bilgileri -->
+                    <tfoot>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.OrderDate)</th>
+                            <th>@Html.DisplayNameFor(model => model.User)</th>
+                            <th>@Html.DisplayNameFor(model => model.ShippingAddress)</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </tfoot>
+
+                    <!-- Tablo verileri -->
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.OrderDate)</td>
+                                <td>@Html.DisplayFor(modelItem => item.User!.Email)</td>
+                                <td>@Html.DisplayFor(modelItem => item.ShippingAddress.Address1)</td>
+                                <td>
+                                    <!-- İşlem butonları -->
+                                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil"></i> Düzenle</a>
+                                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-info-circle"></i> Detaylar</a>
+                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i> Sil</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap ve DataTables script dosyaları -->
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+<script src="~/admin_template/js/datatables-simple-demo.js"></script>

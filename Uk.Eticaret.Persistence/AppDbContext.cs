@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using Uk.Eticaret.Persistence;
 using Uk.Eticaret.Persistence.Entities;
 
 namespace Uk.Eticaret.Persistence
@@ -26,5 +29,21 @@ namespace Uk.Eticaret.Persistence
         {
             base.OnModelCreating(modelBuilder);
         }
+    }
+}
+
+public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+{
+    public AppDbContext CreateDbContext(string[] args)
+    {
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json")
+            .Build();
+
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        optionsBuilder.UseSqlServer(configuration.GetConnectionString("Default"));
+
+        return new AppDbContext(optionsBuilder.Options);
     }
 }

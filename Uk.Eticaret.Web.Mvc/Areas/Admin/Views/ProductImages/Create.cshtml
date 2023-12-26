@@ -1,0 +1,39 @@
+﻿@model Uk.Eticaret.Persistence.Entities.ProductImage
+
+<div class="container mt-5">
+    <div class="container-fluid px-4">
+
+        <h1 class="mt-4">Tables</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item">Product Image</li>
+            <li class="breadcrumb-item active">Create</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Product Image Create
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="mb-3">
+                                <label asp-for="ImageUrl" class="form-label"></label>
+                                <input asp-for="ImageUrl" class="form-control" />
+                                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                            </div>
+                            <input type="hidden" asp-for="Id" />
+
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">Create</button>
+                                <a asp-action="Index" asp-route-id="@ViewBag.ProductId" class="btn btn-secondary">Back to List</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

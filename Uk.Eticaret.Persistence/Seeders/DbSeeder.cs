@@ -51,7 +51,7 @@ namespace Uk.Eticaret.Persistence.Seeders
                             .RuleFor(pi => pi.ImageUrl, f => f.Image.PicsumUrl())
                             .RuleFor(pi => pi.ProductId, f => product.Id);
 
-                        var images = imageFaker.Generate(1);
+                        var images = imageFaker.Generate(3);
 
                         context.ProductImages.AddRange(images);
                         context.SaveChanges();

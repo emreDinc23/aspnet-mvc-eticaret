@@ -1,0 +1,46 @@
+﻿@model Uk.Eticaret.Persistence.Entities.ProductImage
+<div class="container mt-5">
+<div class="container-fluid px-4">
+
+<h1 class="mt-4">Tables</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item">Product Image</li>
+    <li class="breadcrumb-item active">Delete</li>
+</ol>
+
+<p class="text-center">
+            <a class="btn btn-success btn-sm" asp-action="Edit" asp-route-id="@Model.Id">Edit Now</a>
+</p>
+
+<div class="card mb-4">
+<div class="card-header">
+    <i class="fas fa-table me-1"></i>
+    Product Image Delete
+</div>
+
+<div class="card-body">
+<h3>Are you sure you want to delete this?</h3>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ImageUrl)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ImageUrl)
+        </dd>
+        
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index" asp-route-id="@Model.ProductId" class="btn btn-secondary">Back to List</a>
+    </form>
+</div>
+</div>
+</div>
+</div>
+</div>
