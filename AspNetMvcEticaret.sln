@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uk.Eticaret.Business", "Uk.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uk.Eticaret.Persistence", "Uk.Eticaret.Persistence\Uk.Eticaret.Persistence.csproj", "{2D921FC3-BFDE-4AC9-B752-5DD805937094}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{E51C1902-D168-4180-813F-82259139063C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{2D921FC3-BFDE-4AC9-B752-5DD805937094}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D921FC3-BFDE-4AC9-B752-5DD805937094}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D921FC3-BFDE-4AC9-B752-5DD805937094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E51C1902-D168-4180-813F-82259139063C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E51C1902-D168-4180-813F-82259139063C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E51C1902-D168-4180-813F-82259139063C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E51C1902-D168-4180-813F-82259139063C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
