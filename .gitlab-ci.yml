@@ -1,0 +1,22 @@
+# .gitlab-ci.yml
+
+stages:
+  - test
+
+test:
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:latest  # .NET SDK içeren bir Docker imajý kullanabiliriz
+
+  before_script:
+    - dotnet restore  # Proje baðýmlýlýklarýný geri yükle
+
+  script:
+    - dotnet build  # Projeyi derle
+    - dotnet test --logger "trx;LogFileName=testresults.trx"  # Testleri çalýþtýr ve TRX formatýnda sonuçlarý kaydet
+
+  artifacts:
+    paths:
+      - "**/testresults.trx"  # Test sonuçlarýný artifacts olarak kaydet
+    reports:
+      junit: "**/testresults.trx"  # JUnit stili test raporu oluþtur
+
