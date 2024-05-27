@@ -1,31 +1,25 @@
-name: .NET Core
+trigger:
+- main
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+pool:
+  vmImage: 'windows-latest'
 
-jobs:
-  build:
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '5.x.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
 
-    runs-on: windows-latest
+- script: dotnet build
+  displayName: 'Build project'
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '5.0.x'
-    - name: Install dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --logger "trx;LogFileName=test-results.trx"
+- script: dotnet test --logger "trx;LogFileName=test-results.trx"
+  displayName: 'Run tests'
 
-    - name: Publish Test Results
-      uses: actions/upload-artifact@v2
-      with:
-        name: test-results
-        path: '**/test-results.trx'
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'VSTest'
+    testResultsFiles: '**/test-results.trx'
+    mergeTestResults: true
+    failTaskOnFailedTests: true
