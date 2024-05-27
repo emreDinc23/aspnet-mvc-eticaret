@@ -1,12 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Uk.Eticaret.Web.Mvc.Models;
-using Uk.Eticaret.Persistence;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Uk.Eticaret.Web.Mvc.Models;
 using Uk.Eticaret.Persistence.Entities;
 using Uk.Eticaret.Web.Mvc.Services.Email;
+using Uk.Eticaret.Persistence;
 
 namespace Uk.Eticaret.Web.Mvc.Controllers
 {
@@ -21,6 +25,9 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
             _emailService = emailService;
         }
 
+
+
+        [HttpGet]
         public IActionResult Login(string returnUrl = "/")
         {
             return View();
@@ -29,58 +36,49 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model, string returnUrl = "/")
         {
-            var user = await _context.Users.FirstOrDefaultAsync(e => e.Email == model.Email && e.Password == model.Password);
-            // Kullanıcıyı doğrula ve cookie oluştur
-            if (user != null)
+            if (ModelState.IsValid)
             {
-                // Kimlik Bilgisi
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.DateOfBirth, user.DateOfBirth.ToString()),
-                };
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
 
-                if (user.Roles != null)
+                if (user != null)
                 {
-                    var roles = user.Roles.Split(',');
-                    foreach (var role in roles) claims.Add(new Claim(ClaimTypes.Role, role));
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.Username),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new Claim(ClaimTypes.DateOfBirth, user.DateOfBirth.ToString())
+                        // Add more claims as needed (e.g., roles)
+                    };
+
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    var authProperties = new AuthenticationProperties
+                    {
+                        ExpiresUtc = DateTime.UtcNow.AddMonths(1)
+                    };
+
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties);
+
+                    return LocalRedirect(returnUrl);
                 }
 
-                // Kimlik
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                // Cüzdan
-                var identityPrinciple = new ClaimsPrincipal(claimsIdentity);
-
-                var authProperties = new AuthenticationProperties
-                {
-                    ExpiresUtc = DateTime.UtcNow.AddMonths(1)
-                };
-
-                // Giriş yap
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    identityPrinciple,
-                    authProperties);
-
-                return LocalRedirect(returnUrl);
+                ModelState.AddModelError(string.Empty, "Invalid email or password.");
             }
-            else
-            {
-                // Kullanıcı adı veya şifre hatalı, hata mesajını göster
-                ModelState.AddModelError(string.Empty, "Invalid username or password");
-                return View();
-            }
+
+            return View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            // Cookie'yi sil ve kullanıcıyı çıkış yap
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
@@ -89,35 +87,34 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterModel model)
         {
-            string defaultUsername = "User";
-            Random random = new Random();
-            int randomNumber = random.Next(1000, 9999);
             if (ModelState.IsValid)
             {
-                // Kullanıcıyı kaydetme işlemi
+                // Generate a random username or use a default logic
+                string defaultUsername = "User" + new Random().Next(1000, 9999);
+
                 var user = new User
                 {
-                    Username = defaultUsername + randomNumber.ToString(),
+                    Username = defaultUsername,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
+                    Gender = "erkek",
+                    Roles = "deneme",
                     PhoneNumber = model.PhoneNumber,
-                    Password = model.Password, // Şifreyi güvenli bir şekilde saklamak için gerekirse uygun yöntem kullanılmalıdır
-                    Gender = "",
-                    Roles = ""
+                    Password = model.Password // Hash password for security
+                    // Additional user properties as needed
                 };
 
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
 
-                // Kayıt işlemi başarılı, giriş yap sayfasına yönlendir
                 return RedirectToAction("Login", "Auth");
             }
 
-            // ModelState geçerli değilse, hata mesajları ile birlikte aynı sayfaya geri dön
             return View(model);
         }
 
+        [HttpGet]
         public IActionResult ForgotPassword()
         {
             return View();
@@ -126,110 +123,114 @@ namespace Uk.Eticaret.Web.Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(string email)
         {
-            // Kullanıcıyı e-posta adresine göre bul
-            var user = await _context.Users.FirstOrDefaultAsync(e => e.Email == email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
 
             if (user != null)
             {
-                try
-                {
-                    // Kullanıcıyı bulduk, şimdi şifre sıfırlama token'ı oluşturmalıyız
-                    var resetToken = Guid.NewGuid().ToString();
+                var resetToken = Guid.NewGuid().ToString();
 
-                    // Token'ı kullanıcıya bağlı olarak saklamalısınız (örneğin, veritabanında bir alan olarak)
-                    user.ResetPasswordToken = resetToken;
-                    await _context.SaveChangesAsync();
+                // Store reset token and expiration in user entity
+                user.ResetPasswordToken = resetToken;
+                user.ResetPasswordTokenExpiration = DateTime.UtcNow.AddHours(1);
 
-                    // Şifre sıfırlama bağlantısını içeren bir e-posta gönder
-                    var resetLink = Url.Action("ResetPassword", "Auth", new { email = email, token = resetToken }, Request.Scheme);
+                await _context.SaveChangesAsync();
 
-                    // E-posta gönderme işlemi (IEmailService kullanılarak)
-                    await _emailService.SendEmailAsync(email, "Şifre Sıfırlama", $"Şifre sıfırlama bağlantısı: {resetLink}");
+                var resetLink = Url.Action("ResetPassword", "Auth", new { email = email, token = resetToken }, Request.Scheme);
 
-                    user.ResetPasswordTokenExpiration = DateTime.UtcNow.AddHours(1);
-                    // E-posta gönderildiğini varsayalım
-                    return RedirectToAction("Access", "Page", new { message = "Şifre Sıfırlama bağlantısı Mailinize gönderildi (E posta adresinizi kontrol ediniz" });
-                }
-                catch (Exception)
-                {
-                    // Hata durumunda uygun bir işlem yapabilirsiniz
-                    ModelState.AddModelError(string.Empty, "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
-                    return View("ForgotPassword");
-                }
+                await _emailService.SendEmailAsync(email, "Password Reset", $"Reset your password here: {resetLink}");
+
+                return RedirectToAction("PasswordResetSent", "Auth");
             }
 
-            // Kullanıcı bulunamadı
-            ModelState.AddModelError(string.Empty, "Bu e-posta adresine kayıtlı bir kullanıcı bulunamadı.");
-            return View("ForgotPassword");
+            ModelState.AddModelError(string.Empty, "User not found.");
+            return View();
         }
 
         [HttpGet]
-        public IActionResult ResetPassword(string email, string token)
+        public async Task<IActionResult> ResetPassword(string email, string token)
         {
-            // Eğer email veya token boşsa veya kullanıcı bulunamazsa, hata sayfasına yönlendir
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
-            {
-                return RedirectToAction("Error", "Page", new { message = "Hatalı veri girdiniz bilgileri kontrol ediniz..." });
-            }
+            // Validate email and token, and check token expiration
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.ResetPasswordToken == token);
 
-            // Kullanıcıyı email ve token'a göre bul
-            var user = _context.Users.FirstOrDefault(e => e.Email == email && e.ResetPasswordToken == token);
-
-            // Kullanıcı bulunamazsa veya token süresi geçerli değilse, hata sayfasına yönlendir
             if (user == null || user.ResetPasswordTokenExpiration < DateTime.UtcNow)
             {
-                ModelState.AddModelError(string.Empty, "Url geçerli değil tekrar deneyiniz");
+                ModelState.AddModelError(string.Empty, "Invalid email or token.");
                 return View("ForgotPassword");
             }
 
-            // Şifre sıfırlama sayfasını göster
-            return View(new ResetPasswordModel { Email = email, Token = token });
+            var model = new ResetPasswordModel { Email = email, Token = token };
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
         {
-            // Kullanıcıyı, email ve token'a göre veritabanında bul
-            var user = await _context.Users.FirstOrDefaultAsync(e => e.Email == model.Email && e.ResetPasswordToken == model.Token);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.ResetPasswordToken == model.Token);
 
-            // Kullanıcı bulunamazsa veya token süresi geçerli değilse, hata sayfasına yönlendir
             if (user == null || user.ResetPasswordTokenExpiration < DateTime.UtcNow)
             {
-                return RedirectToAction("Error", "Page", new { message = "Bir hata oluştu tekrar deneyiniz.." });
+                return RedirectToAction("Error", "Page", new { message = "An error occurred. Please try again." });
             }
 
-            // Yeni şifre ve şifre onayı kontrolü
             if (model.Password != model.ConfirmPassword)
             {
-                ModelState.AddModelError(string.Empty, "Şifreler eşleşmiyor.");
+                ModelState.AddModelError(string.Empty, "Passwords do not match.");
                 return View(model);
             }
 
-            // Yeni şifreyi kullanıcının şifresi olarak güncelle
             user.Password = model.Password;
-
-            // Şifre sıfırlama token'ını ve süresini temizle
             user.ResetPasswordToken = null;
             user.ResetPasswordTokenExpiration = null;
 
-            // Veritabanında güncelleme işlemi
             await _context.SaveChangesAsync();
 
-            // Şifre sıfırlama işlemi başarılıysa, giriş sayfasına yönlendir
-            return RedirectToAction("Access", "Page", new { message = "Şifreniz başarıyla sıfırlandı. Login sayfasına yönlendiriliyorsunuz..." });
+            return RedirectToAction("Login", "Auth");
         }
 
         public IActionResult PasswordResetSent()
         {
-            // Şifre sıfırlama bağlantısı gönderildi sayfasını göster
             return View();
         }
 
         [HttpGet]
         public IActionResult AccessDenied()
         {
-            // Erişim reddedildi sayfasını göster
             return View();
         }
+        [HttpGet]
+        public IActionResult TwitterLogin(string returnUrl = "/")
+        {
+            var redirectUrl = Url.Action("TwitterResponse", "Auth", new { returnUrl = returnUrl });
+            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+            return Challenge(properties, "Twitter");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TwitterResponse(string returnUrl = "/")
+        {
+            var result = await HttpContext.AuthenticateAsync("Twitter");
+
+            if (result.Succeeded)
+            {
+                var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new Claim(claim.Type, claim.Value)).ToList();
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                var authProperties = new AuthenticationProperties
+                {
+                    ExpiresUtc = DateTime.UtcNow.AddMonths(1)
+                };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity),
+                    authProperties);
+
+                return LocalRedirect(returnUrl);
+            }
+
+            return RedirectToAction("Login", "Auth");
+        }
+
     }
 }

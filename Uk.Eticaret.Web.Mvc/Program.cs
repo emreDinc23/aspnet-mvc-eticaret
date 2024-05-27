@@ -35,7 +35,12 @@ builder.Services
         option.LoginPath = "/Auth/Login";
         option.LogoutPath = "/Auth/Logout";
         option.AccessDeniedPath = "/Auth/AccessDenied";
-    });
+    }).AddTwitter(twitterOptions =>
+    {
+        twitterOptions.ConsumerKey = "VnZIQRxIaJ8Nmi607FUOCp3aR";
+        twitterOptions.ConsumerSecret = "pRrlhDOkNFRZcixUoAowN60h9yRG93VsDAF3JdQrhX51P92rzP";
+        twitterOptions.CallbackPath = new PathString("/signin-twitter");
+    }); ;
 
 var app = builder.Build();
 
